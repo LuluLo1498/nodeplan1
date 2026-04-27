@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* COLORES */
+
+
+
+
+
+/* fondo página inicio */
+.hero-background {
+
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                      url('../../public/imagenes/Fondo-inicio.jpg') !important;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* CAMBIO IMPORTANTE: 80vh en lugar de 80px */
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    
+    border-radius: 0 0 40px 80px;
+}
+   
+
+/* El logo redondo */
+.logo-nav {
+    @apply h-10 w-10 rounded-full object-cover border-2 border-indigo-500;
+}

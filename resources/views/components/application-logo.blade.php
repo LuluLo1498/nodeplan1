@@ -1,0 +1,1 @@
+<img src="/imagenes/LogoNodePlan.jpg" alt="Logo" class="h-20 w-auto rounded-full object-cover">
