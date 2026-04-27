@@ -5,12 +5,24 @@ use App\Http\Controllers\NoteController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan; // Importante para el truco
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 */
+
+// --- RUTA DE EMERGENCIA PARA VERCEL (MIGRACIONES) ---
+// Úsala una sola vez entrando a: tuweb.vercel.app/migrar-todo
+Route::get('/migrar-todo', function () {
+    try {
+        Artisan::call('migrate', ['--force' => true]);
+        return "¡Base de datos configurada y tablas creadas con éxito!";
+    } catch (\Exception $e) {
+        return "Error al migrar: " . $e->getMessage();
+    }
+});
 
 // Página de bienvenida
 Route::get('/', function () {
@@ -50,7 +62,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/calendario', function () {
         return view('dashboard'); 
     })->name('calendario');
-
 });
 
 require __DIR__.'/auth.php';
