@@ -45,7 +45,9 @@ RUN chmod -R 775 storage bootstrap/cache
 # 9. Limpiar formato del entrypoint y dar permisos de ejecución
 RUN dos2unix entrypoint.sh && chmod +x entrypoint.sh
 
+# ... (todo tu Dockerfile anterior hasta la línea de EXPOSE 80) ...
+
 EXPOSE 80
 
-# 10. Usar el script de entrada para arrancar
-ENTRYPOINT ["/var/www/html/entrypoint.sh"]
+# Forzamos la ejecución manual del comando antes de Apache
+ENTRYPOINT ["/bin/sh", "-c", "php artisan migrate --force && apache2-foreground"]
