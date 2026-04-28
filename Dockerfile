@@ -10,25 +10,31 @@ RUN apt-get update && apt-get install -y \
     git \
     curl
 
-# Instalar extensiones de PHP
+# Instalar extensiones de PHP necesarias para Laravel
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Configurar Apache
+# Configurar Apache para que apunte a la carpeta /public de Laravel
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN a2enmod rewrite
 
-# Copiar el proyecto
+# Copiar el proyecto al contenedor
 WORKDIR /var/www/html
 COPY . .
 
-# Instalar dependencias de Laravel
+# Instalar dependencias de Laravel (PHP)
 RUN composer install --no-dev --optimize-autoloader
 
-# Permisos para Laravel
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/cache
+# --- EL CAMBIO ESTÁ AQUÍ ---
+# Creamos las carpetas necesarias por si no existen y asignamos permisos
+RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chmod -R 775 storage bootstrap/cache
 
 EXPOSE 80
+
+# Comando para iniciar Apache
+CMD ["apache2-foreground"]
