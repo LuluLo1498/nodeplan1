@@ -6,7 +6,10 @@
     }
   },
   "routes": [
-    { "src": "/build/(.*)", "dest": "/static/$1" },
     { "src": "/(.*)", "dest": "/api/index.php" }
-  ]
+  ],
+  "env": {
+    "APP_ENV": "production",
+    "APP_DEBUG": "true"
+  }
 }
