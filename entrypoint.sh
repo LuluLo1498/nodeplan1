@@ -1,11 +1,12 @@
 #!/bin/sh
 
-# Limpiar cachés de Laravel
-php artisan config:clear
-php artisan route:clear
+# Si la variable existe, borra todo y recrea (solo para arreglar el error actual)
+if [ "$MIGRATE_FRESH" = "true" ]; then
+    echo "Limpiando base de datos y recreando tablas..."
+    php artisan migrate:fresh --force
+else
+    php artisan migrate --force
+fi
 
-# Ejecutar las migraciones (esto creará las tablas de notas y asignaturas)
-php artisan migrate --force
-
-# Iniciar el servidor
+# Iniciar Apache
 exec apache2-foreground
