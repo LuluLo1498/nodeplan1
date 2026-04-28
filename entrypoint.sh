@@ -1,12 +1,11 @@
 #!/bin/sh
 
-# Crear el enlace simbólico para las imágenes (si usas storage)
-php artisan storage:link --force
+# Limpiar cachés de Laravel
+php artisan config:clear
+php artisan route:clear
 
-# Ejecutar las migraciones de la base de datos
-# El flag --force es obligatorio en producción
+# Ejecutar las migraciones (esto creará las tablas de notas y asignaturas)
 php artisan migrate --force
 
-# Iniciar Apache en primer plano para que Render no cierre el contenedor
-echo "Arrancando servidor Apache..."
+# Iniciar el servidor
 exec apache2-foreground
