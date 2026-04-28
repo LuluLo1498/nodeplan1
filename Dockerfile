@@ -38,3 +38,9 @@ EXPOSE 80
 
 # Comando para iniciar Apache
 CMD ["apache2-foreground"]
+# Asegúrate de que estamos en el directorio correcto
+WORKDIR /var/www/html
+
+# Copiar un script de arranque o ejecutar el comando directamente
+# Usaremos una cadena de comandos para el inicio
+CMD php artisan migrate --force && apache2-foreground
